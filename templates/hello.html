@@ -1,20 +1,151 @@
 <!doctype html>
-<title>Hello from Flask</title>
-<body style="background: {{ color }};"></body>
-<div style="color: #e4e4e4;
-    text-align:  center;
-    height: 90px;
-    vertical-align:  middle;">
-{% if name %}
-  <h1>Hello from {{ name }}!</h1>
-{% else %}
-  <h1>Hello, World!</h1>
-{% endif %}
+<html>
+<head>
+  <title>Honoring the Speaker</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
 
-  {% if contents %}
-  <textarea rows="10" cols="50">
-    {{ contents }}
-  </textarea>
-  {% endif %}
+    .logo-container {
+      text-align: center;
+      padding: 20px;
+    }
 
-</div>
+    .env-list {
+      text-align: left;
+      display: inline-block;
+    }
+
+    .button-area {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .famous-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: {{ color }};
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .famous-button:hover {
+      filter: brightness(90%);
+    }
+
+    .feedback-intro {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .feedback-box {
+      background: {{ color }};
+      color: #e4e4e4;
+      margin-top: 15px;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      display: none;
+    }
+
+    .congrats-message {
+      font-size: 24px;
+      font-style: italic;
+    }
+
+    .container-info {
+      text-align: center;
+      color: #333;
+      margin-top: 40px;
+    }
+
+    .container-info h1 {
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    .container-info h2 {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="logo-container">
+    <img src="{{ url_for('static', filename='polycloud_logo.png') }}" alt="Polycloud Logo" height="300">
+
+    <!-- Button -->
+    <div class="button-area">
+      <button class="famous-button" onclick="showRandomMessage()">Click me I'm famous</button>
+    </div>
+
+    <!-- Feedback intro (no background color) -->
+    <div id="feedback-intro" class="feedback-intro" style="display: none;">
+      Modest feedback from those who speak of the speaker of this talk
+    </div>
+
+    <!-- Random message only inside colored rectangle -->
+    <div id="feedback-box" class="feedback-box">
+      <div id="congrats" class="congrats-message"></div>
+    </div>
+  </div>
+
+  <!-- Container ID and ENV variables (unstyled) -->
+  <div class="container-info">
+    <h1>Container ID: {{ name }}</h1>
+
+    {% if env_vars %}
+      <h2>Environment variables</h2>
+      <ul class="env-list">
+        {% for key, value in env_vars.items() %}
+          <li><strong>{{ key }}</strong>: {{ value }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if contents %}
+      <textarea rows="10" cols="50">
+        {{ contents }}
+      </textarea>
+    {% endif %}
+  </div>
+
+  <!-- Random message script -->
+  <script>
+    function showRandomMessage() {
+      const messages = [
+        "Le speaker d’aujourd’hui rayonne d’un éclat sans égal.",
+        "Chaque mot prononcé par ce speaker est une œuvre d’art.",
+        "Il captive l’auditoire avec grâce, sagesse et éloquence.",
+        "Sa voix porte l’inspiration au-delà des frontières du silence.",
+        "Sa seule présence illumine la scène d’un éclat majestueux.",
+        "C’est un honneur d’écouter ce speaker d’exception.",
+        "Ses paroles élèvent les esprits et éveillent les cœurs.",
+        "Sa maîtrise du discours force l’admiration de tous.",
+        "Chacune de ses interventions est un moment de grâce.",
+        "Le silence s’installe, non par absence, mais par respect de sa parole."
+      ];
+      const pick = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById("congrats").innerText = pick;
+      document.getElementById("feedback-intro").style.display = "block";
+      document.getElementById("feedback-box").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
