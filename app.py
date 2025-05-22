@@ -27,8 +27,12 @@ COLOR = random.choice(list(color_codes.keys()))
 
 @app.route("/")
 def main():
-    # Filter ENV_ variables
-    env_vars = {k: v for k, v in os.environ.items() if k.startswith("ENV_")}
+    # Filter ENV_ and APP_COLOR environment variables
+    env_vars = {
+        k: v for k, v in os.environ.items()
+        if k.startswith("ENV_") or k == "APP_COLOR"
+    }
+
     return render_template(
         'hello.html',
         name=socket.gethostname(),
